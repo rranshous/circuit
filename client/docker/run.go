@@ -19,17 +19,18 @@ func init() {
 
 // Run parameterizes a container execution.
 type Run struct {
-	Image string
-	Memory int64
+	Image     string
+	Memory    int64
 	CpuShares int64
-	Lxc []string
-	Volume []string
-	Dir string
-	Entry string
-	Env []string
-	Path string
-	Args []string
-	Scrub bool
+	Lxc       []string
+	Volume    []string
+	Dir       string
+	Entry     string
+	Env       []string
+	Path      string
+	Args      []string
+	Scrub     bool
+	DNS       string
 }
 
 func ParseRun(src string) (*Run, error) {
@@ -63,6 +64,9 @@ func (x *Run) Arg(name string) []string {
 	}
 	if x.Entry != "" {
 		r = append(r, "--entrypoint", fmt.Sprintf("%s", x.Entry))
+	}
+	if x.DNS != "" {
+		r = append(r, "--dns", fmt.Sprintf("%s", x.DNS))
 	}
 	r = append(r, x.Image) // image
 	if x.Path != "" {
